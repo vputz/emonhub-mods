@@ -14,6 +14,7 @@ import logging
 import json
 import threading
 import Queue
+import socket
 
 import emonhub_buffer as ehb
   
@@ -352,6 +353,17 @@ class EmonHubEmoncmsReporter(EmonHubReporter):
         else:
             self._log.warning(self.name + " send failure: wanted 'ok' but got '" +reply+ "'")
 
+def isIP_v2(address):
+    try:
+        socket.inet_aton(address)
+        ip = True
+    except socket.error:
+        ip = False
+
+    return ip
+
+
+
 """class EmonHubReporterInitError
 
 Raise this when init fails.
@@ -361,3 +373,7 @@ Raise this when init fails.
 
 class EmonHubReporterInitError(Exception):
     pass
+
+
+from hyperion_reporter import EmonHubHyperionReporter
+from riemann_reporter import EmonHubRiemannReporter
